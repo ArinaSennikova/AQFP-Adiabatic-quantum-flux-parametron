@@ -1,0 +1,29 @@
+*aqfp_single
+
+*excitation cirquit
+Lx1 inx mid 10p
+Lx2 mid 0  10p
+*Rin in 0 1G
+*Ix inx 0 PWL(0p 0mA  500p 1.5mA  1500p 1.5mA  2000p 0mA)
+Ix inx 0 sin(2mA 1.5mA 5G 0 0)
+
+*main cirquit
+L01 2 1 1.31p 
+L02 2 3 1.31p 
+K1 L01 Lx1 0.3
+K2 L02 Lx2 0.3
+L0q 2 0 10.5p
+B01 1 0 jmitll area=50
+B02 3 0 jmitll area=50
+R01 1 0 0.9
+R02 3 0 0.9
+Iin 2 0 DC 0.01uA 
+
+.model jmitll jj(rtype=1, vg=2.8mV, cap=0.07pF, r0=60, rN=1.37, icrit=1uA)
+.tran 0.25p 2000p 0 0.25p
+.print PHASE B01 
+.print PHASE B02
+.print DEVI Ix
+.print DEVI  L0q
+
+.end
