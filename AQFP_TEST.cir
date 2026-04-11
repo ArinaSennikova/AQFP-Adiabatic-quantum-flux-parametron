@@ -4,21 +4,23 @@
 B01 0 1 jmitll area=50
 R01 0 1 0.9
 
-L01 1 2 1.31p
-P_left 2 3 sin(0 3.14 1G 0 )
-P_right 3 4 sin(0 3.14 1G 0 )
-L02 4 5 1.31p
+L01 1 2 5.27p
+*P_left 2 3 sin(0 3.14 1G 0 )
+*P_right 3 4 sin(0 3.14 1G 0 )
+P_left 2 3 pwl(0p 0 500p 3.14 1500p 3.14 2000p 0 2300p 0 2700p 3.14 3700p 3.14 4200p 0 )
+P_right 3 4 pwl(0p 0 500p 3.14 1500p 3.14 2000p 0 2300p 0 2700p 3.14 3700p 3.14 4200p 0 )
+L02 4 5 6.58p
 
 B02 5 0 jmitll area=50
 R02 5 0 0.9
 
-L0q 3 0 10.5p
+L0q 3 0 19.77p
 
 Iin 0 3 5u
 
 .model jmitll jj(rtype=1, vg=2.8mV, cap=0.07pF, r0=60, rN=1.37, icrit=1uA)
 
-.tran 0.25p 2000p 0 0.25p
+.tran 0.25p 4500p 0 0.25p
 .file AQFP_TEST.dat
 .plot p(P_left) p(L0q)
 .plot p(B01) p(B02)
