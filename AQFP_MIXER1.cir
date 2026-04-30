@@ -1,0 +1,49 @@
+*aqfp_mixer1
+*main cirquit
+
+***AQFP
+*Subcircuit 
+.subckt AQFP  x11 x21 x12 x22 4 5 3
+
+B01 0 1 jmitll area=50
+R01 0 1 0.9
+L01 1 3 5.27p
+L02 3 2 6.58p
+B02 2 0 jmitll area=50
+R02 2 0 0.9
+L0q 3 0 19.77p
+
+L03 4 5 19.77p
+L22 x22 mid2 2.64p
+L21 mid2 x21 2.64p
+L12 x12 mid1 2.64p
+L11 mid1 x11 2.64p
+
+K1 L01 L11 0.3
+K2 L02 L12 0.3
+K11 L01 L21 0.3
+K22 L02 L22 0.3
+K3 L0q L03 0.3
+
+.ends AQFP
+
+*Main design
+X01 0 0 x01 x02 12 11 fix AQFP
+X02 x01 x02 x1 x2 11 13 in AQFP 
+Rs 12 0 0.9
+I_r2 0 x2 sin(0 0.0008 5G 0)
+I_bb 0 x1 pwl(0n 0u 5n 0u 10n 120u 15n 0u 20n 0u 25n 120u 30n 0u 35n 0u)
+Ifix 0 fix 8u
+Iin 0 in pwl(0n -8u 17n -8u 18n 8u 30n 8u 35n 8u)
+
+.model jmitll jj(rtype=1, vg=2.8mV, cap=0.07pF, r0=60, rN=1.37, icrit=1uA)
+
+.tran 0.25n 37n 0 0.25n
+.file AQFP_MIXER1.dat
+.plot I(Iin)
+.plot I(I_r2)
+.plot I(L0q.X02) I(L0q.X01)
+.plot I(I_bb)
+.plot I(Ifix)
+.plot V(13)
+.end
